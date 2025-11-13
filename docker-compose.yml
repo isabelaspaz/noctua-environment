@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  noctua-frontend:
+    build:
+      context: ./source/noctua-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+
+  # noctua-backend:
+    # AQUI É SÓ UM EXEMPLO DE SERVIÇO BACKEND
+    # build:
+    #   context: ./source/noctua-backend
+    #   dockerfile: Dockerfile
+    # ports:
+    #   - "8080:8000"
+    # restart: unless-stopped
+    # environment:
+    #   - NODE_ENV=production
+    # depends_on:
+    #   - noctua-frontend
+    # O backend está desativado (comentado) até estar pronto para subir.
