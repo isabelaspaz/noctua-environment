@@ -9,16 +9,37 @@ services:
       - "3000:80"
     restart: unless-stopped
 
-  # noctua-backend:
-    # AQUI É SÓ UM EXEMPLO DE SERVIÇO BACKEND
-    # build:
-    #   context: ./source/noctua-backend
-    #   dockerfile: Dockerfile
-    # ports:
-    #   - "8080:8000"
-    # restart: unless-stopped
-    # environment:
-    #   - NODE_ENV=production
-    # depends_on:
-    #   - noctua-frontend
-    # O backend está desativado (comentado) até estar pronto para subir.
+  noctua-backend:
+    build:
+      context: ./source/noctua-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8080"
+    restart: unless-stopped
+    environment:
+      - MYSQL_URL=jdbc:mysql://noctua-mysql:3306/noctua
+      - MYSQL_USER=noctua
+      - MYSQL_PASSWORD=noctua
+    depends_on:
+      - noctua-mysql
+
+  noctua-mysql:
+    image: mysql:8.0
+    container_name: noctua-mysql
+    restart: unless-stopped
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: noctua
+      MYSQL_DATABASE: noctua
+    volumes:
+      - noctua-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  noctua-mysql-data:
