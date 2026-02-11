@@ -67,5 +67,3 @@ Alternativamente, é possível executar os serviços separadamente em ambiente l
 ## Considerações Finais
 
 Este ambiente foi projetado com enfoque acadêmico e modularidade, visando facilitar a evolução dos serviços, testes isolados e implantação contínua. Recomenda-se a utilização do Docker para maior praticidade e portabilidade entre diferentes ambientes de desenvolvimento.
-
-Dúvidas ou sugestões podem ser encaminhadas via [issues do repositório](https://github.com/vitornsc7/noctua-environment/issues).
