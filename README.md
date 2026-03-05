@@ -44,7 +44,7 @@ Este comando irá construir as imagens necessárias e iniciar os serviços defin
 Alternativamente, é possível executar os serviços separadamente em ambiente local, conforme os requisitos de cada módulo:
 
 - **Backend (Spring Boot):**
-  
+  Altere as informações em segredo que constituem o banco de dados para o seu banco de dados local no arquivo application.properties.
   Navegue até o diretório do backend e execute utilizando Maven:
 
   ```bash
