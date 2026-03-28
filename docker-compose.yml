@@ -8,6 +8,9 @@ services:
     ports:
       - "3000:80"
     restart: unless-stopped
+    depends_on:
+      noctua-backend:
+        condition: service_healthy
 
   noctua-backend:
     build:
@@ -17,11 +20,18 @@ services:
       - "8000:8080"
     restart: unless-stopped
     environment:
-      - MYSQL_URL=jdbc:mysql://noctua-mysql:3306/noctua
-      - MYSQL_USER=noctua
-      - MYSQL_PASSWORD=noctua
+      - MYSQL_URL=${DB_URL}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
     depends_on:
-      - noctua-mysql
+      noctua-mysql:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health || exit 1" ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
 
   noctua-mysql:
     image: mysql:8.0
@@ -30,12 +40,14 @@ services:
     ports:
       - "3307:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: noctua
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: noctua
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - noctua-mysql-data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       interval: 10s
       timeout: 5s
       retries: 5
