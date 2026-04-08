@@ -1,0 +1,53 @@
+# Dev environment: somente banco + backend
+# O frontend roda localmente com: npm run dev
+#
+# Uso:
+#   docker compose -f docker-compose.dev.yml up
+#
+# Em outro terminal:
+#   cd source/noctua-frontend && npm run dev
+
+services:
+  noctua-mysql:
+    image: mysql:8.0
+    container_name: noctua-mysql
+    restart: unless-stopped
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-noctua}
+      MYSQL_DATABASE: noctua
+      MYSQL_USER: ${DB_USER:-noctua}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-noctua}
+    volumes:
+      - noctua-mysql-dev-data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  noctua-backend:
+    build:
+      context: ./source/noctua-backend
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    environment:
+      MYSQL_URL: jdbc:mysql://noctua-mysql:3306/noctua
+      MYSQL_USER: ${DB_USER:-noctua}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-noctua}
+      JWT_SECRET: ${JWT_SECRET:-noctuaSecretKeyForJwtSigningMustBe256BitsLongAtLeast!}
+    volumes:
+      - ./source/noctua-backend/src:/app/src
+      - maven_cache:/root/.m2
+    depends_on:
+      noctua-mysql:
+        condition: service_healthy
+
+volumes:
+  noctua-mysql-dev-data:
+  maven_cache:
