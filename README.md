@@ -23,47 +23,66 @@ Este projeto visa estabelecer um ambiente de desenvolvimento integrado para apli
    git clone https://github.com/vitornsc7/noctua-frontend.git source/noctua-frontend
    ```
 
+## Configuração de Variáveis de Ambiente
+
+Antes de executar o projeto pela primeira vez, copie o arquivo de exemplo e preencha os valores:
+
+```bash
+cp .env.example .env
+```
+
+O arquivo `.env` contém as credenciais do banco de dados e a chave JWT utilizadas pelos serviços.
+
 ## Execução do Projeto
 
-A execução do ambiente pode ser realizada de duas formas principais:
+O ambiente pode ser executado de duas formas:
 
-### 1. Utilizando Docker Compose
+### 1. Produção — Docker Compose completo
 
-O método recomendado para inicialização dos serviços é através do Docker Compose, que garante independência de ambiente e praticidade na orquestração dos módulos.
+Sobe todos os serviços (banco, backend e frontend) de forma integrada.
 
-No diretório raiz do projeto, execute:
+Na primeira execução ou após alterações nos `Dockerfile`s:
 
 ```bash
 docker compose up --build
 ```
 
-Este comando irá construir as imagens necessárias e iniciar os serviços definidos no arquivo `docker-compose.yml`.
+Nas demais execuções, sem necessidade de rebuild:
 
-### 2. Execução Local (Desenvolvimento)
+```bash
+docker compose up
+```
 
-Alternativamente, é possível executar os serviços separadamente em ambiente local, conforme os requisitos de cada módulo:
+Para reconstruir apenas um serviço específico:
 
-- **Backend (Spring Boot):**
-  Altere as informações em segredo que constituem o banco de dados para o seu banco de dados local no arquivo application.properties.
-  Navegue até o diretório do backend e execute utilizando Maven:
+```bash
+docker compose up --build noctua-backend
+```
 
-  ```bash
-  cd source/noctua-backend
-  mvn spring-boot:run
-  ```
+> O `Dockerfile` do backend usa cache de camadas: as dependências Maven só são baixadas novamente se o `pom.xml` mudar. Alterações apenas no código-fonte são muito mais rápidas.
 
-- **Frontend (React):**
+### 2. Desenvolvimento — Docker Compose parcial + Vite local (recomendado)
 
-  Navegue até o diretório do frontend e execute utilizando Node.js:
+Sobe somente o banco de dados e o backend. O frontend é executado localmente com hot-reload instantâneo via Vite, sem necessidade de rebuild Docker a cada alteração.
 
-  ```bash
-  cd source/noctua-frontend
-  npm install
-  npm run dev
-  ```
-  
-> **Nota:** Caso queira pode usar os comandos de `RUN` da IDE de sua preferência. Esse processo de rodar o projeto usando o Maven e o Node.js são mascarados.
+**Terminal 1 — banco + backend:**
+
+```bash
+docker compose -f docker-compose.dev.yml up
+```
+
+**Terminal 2 — frontend:**
+
+```bash
+cd source/noctua-frontend
+npm install   # apenas na primeira vez
+npm run dev
+```
+
+O Vite está configurado para redirecionar automaticamente as chamadas `/api/*` para o backend em `http://localhost:8080`, sem necessidade de configurações adicionais.
+
+Alterações nos arquivos Java dentro de `source/noctua-backend/src/` são detectadas pelo Spring Boot DevTools e reiniciam o servidor automaticamente.
 
 ## Considerações Finais
 
-Este ambiente foi projetado com enfoque acadêmico e modularidade, visando facilitar a evolução dos serviços, testes isolados e implantação contínua. Recomenda-se a utilização do Docker para maior praticidade e portabilidade entre diferentes ambientes de desenvolvimento.
+Este ambiente foi projetado com enfoque acadêmico e modularidade, visando facilitar a evolução dos serviços, testes isolados e implantação contínua. Recomenda-se o fluxo de desenvolvimento parcial (opção 2) para o dia a dia, reservando o Docker Compose completo para validação final ou deploy.
