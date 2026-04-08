@@ -61,7 +61,7 @@ docker compose up --build noctua-backend
 
 > O `Dockerfile` do backend usa cache de camadas: as dependências Maven só são baixadas novamente se o `pom.xml` mudar. Alterações apenas no código-fonte são muito mais rápidas.
 
-### 2. Desenvolvimento — Docker Compose parcial + Vite local (recomendado)
+### 2. Desenvolvimento — Docker Compose parcial + Vite local
 
 Sobe somente o banco de dados e o backend. O frontend é executado localmente com hot-reload instantâneo via Vite, sem necessidade de rebuild Docker a cada alteração.
 
