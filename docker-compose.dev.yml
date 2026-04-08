@@ -1,12 +1,3 @@
-# Dev environment: somente banco + backend
-# O frontend roda localmente com: npm run dev
-#
-# Uso:
-#   docker compose -f docker-compose.dev.yml up
-#
-# Em outro terminal:
-#   cd source/noctua-frontend && npm run dev
-
 services:
   noctua-mysql:
     image: mysql:8.0
