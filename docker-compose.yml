@@ -16,6 +16,7 @@ services:
     build:
       context: ./source/noctua-backend
       dockerfile: Dockerfile
+      target: runtime
     ports:
       - "8000:8080"
     restart: unless-stopped
