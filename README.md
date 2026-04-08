@@ -41,7 +41,7 @@ O ambiente pode ser executado de duas formas:
 
 Sobe todos os serviços (banco, backend e frontend) de forma integrada.
 
-Na primeira execução ou após alterações nos `Dockerfile`s:
+Na primeira execução ou após alterações nos `Dockerfiles`:
 
 ```bash
 docker compose up --build
