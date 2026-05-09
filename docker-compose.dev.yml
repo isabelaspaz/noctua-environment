@@ -32,6 +32,7 @@ services:
       MYSQL_USER: ${DB_USER:-noctua}
       MYSQL_PASSWORD: ${DB_PASSWORD:-noctua}
       JWT_SECRET: ${JWT_SECRET:-noctuaSecretKeyForJwtSigningMustBe256BitsLongAtLeast!}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY:-}
     volumes:
       - ./source/noctua-backend/src:/app/src
       - maven_cache:/root/.m2
