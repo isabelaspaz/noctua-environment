@@ -24,6 +24,7 @@ services:
       - MYSQL_URL=${DB_URL}
       - MYSQL_USER=${DB_USER}
       - MYSQL_PASSWORD=${DB_PASSWORD}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
     depends_on:
       noctua-mysql:
         condition: service_healthy
