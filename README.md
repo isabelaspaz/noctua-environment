@@ -33,6 +33,8 @@ cp .env.example .env
 
 O arquivo `.env` contém as credenciais do banco de dados e a chave JWT utilizadas pelos serviços.
 
+É necessário adicionar ao arquivo .env nossas credenciais.
+
 ## Execução do Projeto
 
 O ambiente pode ser executado de duas formas:
