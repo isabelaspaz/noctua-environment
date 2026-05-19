@@ -32,7 +32,8 @@ jobs:
           envs: GH_PAT,DB_URL,DB_USER,DB_PASSWORD,DB_ROOT_PASSWORD,JWT_SECRET,GOOGLE_API_KEY,SPRING_MAIL_HOST,SPRING_MAIL_PORT,SPRING_MAIL_USERNAME,SPRING_MAIL_PASSWORD,FRONTEND_URL
           script: |
             set -e
-            export PATH="$PATH:/usr/local/bin:/usr/bin"
+            source ~/.bashrc 2>/dev/null || true
+            export PATH="$PATH:/usr/local/bin:/usr/bin:/snap/bin"
 
             BASE_URL="https://x-access-token:${GH_PAT}@github.com/vitornsc7"
 
