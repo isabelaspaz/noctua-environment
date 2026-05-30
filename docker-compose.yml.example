@@ -63,3 +63,4 @@ services:
 
 volumes:
   noctua-mysql-data:
+
