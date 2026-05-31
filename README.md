@@ -85,6 +85,141 @@ O Vite está configurado para redirecionar automaticamente as chamadas `/api/*` 
 
 Alterações nos arquivos Java dentro de `source/noctua-backend/src/` são detectadas pelo Spring Boot DevTools e reiniciam o servidor automaticamente.
 
-## Considerações Finais
+# Deploy da Infraestrutura Noctua
 
-Este ambiente foi projetado com enfoque acadêmico e modularidade, visando facilitar a evolução dos serviços, testes isolados e implantação contínua. Recomenda-se o fluxo de desenvolvimento parcial (opção 2) para o dia a dia, reservando o Docker Compose completo para validação final ou deploy.
+## 1. Criar a instância EC2
+
+Criar uma instância EC2 utilizando Amazon Linux.
+
+### Configurações recomendadas
+
+* Nome da instância: `noctua`
+* Chave SSH: `noctua-key.pem`
+
+Após a criação da instância, copiar o endpoint público da EC2 e configurar a seguinte secret no GitHub:
+
+### GitHub Secrets
+
+#### EC2_HOST
+
+```text
+<endpoint-publico-da-ec2>
+```
+
+---
+
+## 2. Criar o banco de dados Aurora
+
+Crie um cluster Aurora MySQL.
+
+### Configurações
+
+* Nome do cluster: `noctua-aurora`
+* Usuário administrador: `noctua`
+
+Após a criação do cluster, obter o endpoint do banco e configurar a seguinte secret:
+
+### DB_URL
+
+```text
+jdbc:mysql://<endpoint-do-aurora>:3306/noctua?serverTimezone=UTC&createDatabaseIfNotExist=true
+```
+
+---
+
+## 3. Configurar conectividade entre EC2 e Aurora
+
+Após a criação dos recursos:
+
+1. Verificar se a instância EC2 e o cluster Aurora estão na mesma VPC.
+2. Configurar os Security Groups para permitir acesso ao MySQL (porta 3306).
+3. Garantir que a EC2 consiga se comunicar com o Aurora/RDS através da rede privada da AWS.
+
+---
+
+## 4. Configurar a EC2
+
+Conecte-se à instância via SSH:
+
+```bash
+ssh -i noctua-key.pem ec2-user@<endpoint-publico-da-ec2>
+```
+
+### Atualizar o sistema
+
+```bash
+sudo dnf update -y
+```
+
+### Instalar Git
+
+```bash
+sudo dnf install git -y
+```
+
+### Instalar Docker
+
+```bash
+sudo dnf install docker -y
+
+sudo systemctl enable docker
+sudo systemctl start docker
+```
+
+Adicionar o usuário ao grupo Docker:
+
+```bash
+sudo usermod -aG docker ec2-user
+```
+
+Após executar o comando acima, faça logout e login novamente para aplicar as permissões.
+
+---
+
+## 5. Instalar Docker Compose
+
+```bash
+sudo mkdir -p /usr/local/lib/docker/cli-plugins
+
+sudo curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 \
+-o /usr/local/lib/docker/cli-plugins/docker-compose
+
+sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+```
+
+Verificar instalação:
+
+```bash
+docker compose version
+```
+
+---
+
+## 6. Instalar Docker Buildx
+
+```bash
+mkdir -p ~/.docker/cli-plugins
+
+curl -L https://github.com/docker/buildx/releases/download/v0.25.0/buildx-v0.25.0.linux-amd64 \
+-o ~/.docker/cli-plugins/docker-buildx
+
+chmod +x ~/.docker/cli-plugins/docker-buildx
+```
+
+Verificar instalação:
+
+```bash
+docker buildx version
+```
+
+A saída deve ser semelhante a:
+
+```text
+github.com/docker/buildx v0.25.0
+```
+
+---
+
+## 7. Executar o Deploy
+
+O deploy poderá ser realizado automaticamente através do GitHub Actions.
