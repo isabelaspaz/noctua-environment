@@ -43,10 +43,10 @@ O ambiente pode ser executado de duas formas:
 
 Sobe todos os serviços (banco, backend e frontend) de forma integrada.
 
-Na primeira execução ou após alterações nos `Dockerfiles`:
+Na primeira execução:
 
 ```bash
-docker compose up --build
+docker compose -f docker-compose.dev.yml up
 ```
 
 Nas demais execuções, sem necessidade de rebuild:
@@ -55,25 +55,7 @@ Nas demais execuções, sem necessidade de rebuild:
 docker compose up
 ```
 
-Para reconstruir apenas um serviço específico:
-
-```bash
-docker compose up --build noctua-backend
-```
-
-> O `Dockerfile` do backend usa cache de camadas: as dependências Maven só são baixadas novamente se o `pom.xml` mudar. Alterações apenas no código-fonte são muito mais rápidas.
-
-### 2. Desenvolvimento — Docker Compose parcial + Vite local
-
-Sobe somente o banco de dados e o backend. O frontend é executado localmente com hot-reload instantâneo via Vite, sem necessidade de rebuild Docker a cada alteração.
-
-**Terminal 1 — banco + backend:**
-
-```bash
-docker compose -f docker-compose.dev.yml up
-```
-
-**Terminal 2 — frontend:**
+**Em outra terminal:**
 
 ```bash
 cd source/noctua-frontend
@@ -82,8 +64,6 @@ npm run dev
 ```
 
 O Vite está configurado para redirecionar automaticamente as chamadas `/api/*` para o backend em `http://localhost:8080`, sem necessidade de configurações adicionais.
-
-Alterações nos arquivos Java dentro de `source/noctua-backend/src/` são detectadas pelo Spring Boot DevTools e reiniciam o servidor automaticamente.
 
 # Deploy da Infraestrutura Noctua
 
