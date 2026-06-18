@@ -28,11 +28,16 @@ services:
       - "8080:8080"
     restart: unless-stopped
     environment:
-      MYSQL_URL: jdbc:mysql://noctua-mysql:3306/noctua
-      MYSQL_USER: ${DB_USER:-noctua}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-noctua}
-      JWT_SECRET: ${JWT_SECRET:-noctuaSecretKeyForJwtSigningMustBe256BitsLongAtLeast!}
-      GOOGLE_API_KEY: ${GOOGLE_API_KEY:-}
+      - MYSQL_URL=${DB_URL}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - SPRING_MAIL_HOST=${SPRING_MAIL_HOST}
+      - SPRING_MAIL_PORT=${SPRING_MAIL_PORT}
+      - SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME}
+      - SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD}
+      - FRONTEND_URL=${FRONTEND_URL}
     volumes:
       - ./source/noctua-backend/src:/app/src
       - maven_cache:/root/.m2
