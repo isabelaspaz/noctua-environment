@@ -202,4 +202,4 @@ github.com/docker/buildx v0.25.0
 
 ## 7. Executar o Deploy
 
-O deploy poderá ser realizado automaticamente através do GitHub Actions.
+O deploy poderá ser realizado automaticamente através do GitHub Actions neste repositório.
