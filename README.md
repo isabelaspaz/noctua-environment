@@ -90,7 +90,7 @@ Após a criação da instância, copiar o endpoint público da EC2 e configurar 
 
 ## 2. Criar o banco de dados Aurora
 
-Crie um cluster Aurora MySQL.
+Criar um cluster Aurora MySQL.
 
 ### Configurações
 
