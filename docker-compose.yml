@@ -4,7 +4,7 @@ services:
       context: ./source/noctua-frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:80"
+      - "80:80"
     restart: unless-stopped
     depends_on:
       noctua-backend:
