@@ -184,10 +184,14 @@ docker compose version
 
 ```bash
 mkdir -p ~/.docker/cli-plugins
+```
 
+```bash
 curl -L https://github.com/docker/buildx/releases/download/v0.25.0/buildx-v0.25.0.linux-amd64 \
 -o ~/.docker/cli-plugins/docker-buildx
+```
 
+```bash
 chmod +x ~/.docker/cli-plugins/docker-buildx
 ```
 
