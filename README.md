@@ -141,8 +141,13 @@ sudo dnf install git -y
 
 ```bash
 sudo dnf install docker -y
+```
 
+```bash
 sudo systemctl enable docker
+```
+
+```bash
 sudo systemctl start docker
 ```
 
