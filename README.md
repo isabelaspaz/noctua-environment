@@ -1,6 +1,6 @@
 # Noctua Environment
 
-Este projeto visa estabelecer um ambiente de desenvolvimento integrado para aplicações full-stack, contemplando um backend (Spring Boot) e um frontend (React). O repositório principal organiza e orquestra esses módulos de forma modular, facilitando o desenvolvimento, testes e implantação.
+Este projeto visa estabelecer um ambiente de desenvolvimento integrado para aplicações full-stack, contemplando a camada de aplicação (Spring Boot) e a camada de visualização (React). O repositório principal organiza e orquestra esses módulos de forma modular, facilitando o desenvolvimento, testes e implantação.
 
 ## Clonagem e Configuração do Repositório
 
