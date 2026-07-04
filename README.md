@@ -90,7 +90,7 @@ Após a criação da instância, copiar o endpoint público da EC2 e configurar 
 
 ## 2. Criar o banco de dados Aurora
 
-Crie um cluster Aurora MySQL.
+Criar um cluster Aurora MySQL.
 
 ### Configurações
 
@@ -202,4 +202,4 @@ github.com/docker/buildx v0.25.0
 
 ## 7. Executar o Deploy
 
-O deploy poderá ser realizado automaticamente através do GitHub Actions.
+O deploy poderá ser realizado automaticamente através do GitHub Actions neste repositório.
